@@ -1,5 +1,5 @@
 # Project-2 
-## Farmers Markets in the United States 
+### Farmers Markets in the United States 
 
 Team: Raul Haro, Alexandra Oricchio, Eli Payne
 
