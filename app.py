@@ -41,8 +41,8 @@ columns = Markets.__table__.columns.keys()
 app = Flask(__name__)
 
 # create flask route
-@app.route("/")
-def markets():
+@app.route("/json")
+def markets_json():
     session = Session(engine)
     results = session.query(Markets).all()
     session.close()
@@ -56,6 +56,10 @@ def markets():
 
 
     return jsonify(all_markets)
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 if __name__ == '__main__':
     app.run(debug=True)

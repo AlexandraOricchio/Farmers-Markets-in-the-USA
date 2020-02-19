@@ -1,3 +1,10 @@
+d3.json("json").then(function(data) {
+    console.log(data);
+    // create functions to pull data needed 
+});
+
+
+
 // create map object
 var myMap = L.map('map', {
     center: [37.09, -95.71],
