@@ -1,11 +1,16 @@
 body {
     padding: 0;
     margin: 0;
+    background-color: rgba(240, 227, 211, 0.822);
+    background-image: url("../images/fruit-bgs.png");
+    background-attachment: fixed;   
+
   }
   
   #map,
   body,
   html {
+<<<<<<< HEAD
     height: 100%;
   }
 
@@ -16,3 +21,77 @@ body {
   .bar:hover {
     fill: orange;
   }
+=======
+    height: 80%;
+  }
+
+.info {
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  color: black;
+}
+.info h4 {
+  margin: 0 0 5px;
+  color: rgb(3, 0, 0);
+  text-align: center;
+}
+.legend {
+line-height: 24px;
+color: #555;
+}
+.legend i {
+width: 24px;
+height: 24px;
+float: left;
+margin-right: 8px;
+opacity: 0.7;
+}
+
+.div {
+  opacity:0 ;
+}
+
+.container{
+  width: 50;
+  margin: 50;  
+  height: 380px;
+  padding: 10px;
+  margin: 20;  
+  image-orientation:initial ;
+  text-align: center;  
+  /* background:rgba(231, 222, 210, 0.822); */
+  opacity: 1;
+}
+
+.h1{
+  margin-top: 20px;
+  font-size: 0.1rem;
+  text-align: center;
+  animation: title 1.2s forwards linear;
+}
+.h2{
+  font-size:0.05rem ;
+
+}
+.col-sm-2{
+  background:rgb(134, 163, 134);
+}
+.btn-succes{
+  box-sizing: 10;
+
+}
+@keyframes title {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    font-size: 7.5rem;
+    opacity: 1;
+  }
+}
+>>>>>>> d70a1fc714d25b7d6a7cd1644e1fd3897bcb55f4
