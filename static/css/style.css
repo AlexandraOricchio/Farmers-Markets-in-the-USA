@@ -1,7 +1,7 @@
 body {
     padding: 0;
     margin: 0;
-    background-color: rgba(236, 202, 158, 0.822);
+    background-color: rgba(240, 227, 211, 0.822);
     background-image: url("../images/fruit-bgs.png");
     background-attachment: fixed;   
 
@@ -10,7 +10,7 @@ body {
   #map,
   body,
   html {
-    height: 90%;
+    height: 80%;
   }
 
 .info {
@@ -46,7 +46,7 @@ border-color: black;
 .container{
   width: 50;
   margin: 50;  
-  height: 420px;
+  height: 380px;
   padding: 10px;
   margin: 20;  
   image-orientation:initial ;
@@ -65,7 +65,7 @@ border-color: black;
   font-size:0.05rem ;
 
 }
-.col-md-2{
+.col-sm-2{
   background:rgb(134, 163, 134);
 }
 .btn-succes{
