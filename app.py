@@ -97,6 +97,15 @@ def state_geojson():
     for i in geojson['features']:
         marketsPerCap= (i['properties']['markets']/i['properties']['population'])*100000
         i['properties']['marketsPerCap']=marketsPerCap
+
+    centersDF = pd.read_csv("C:\\Users\\aeori\\git\\Project-2\\static\\data\\state_centers.csv")
+    for i in geojson['features']:
+        state = i['properties']['name']
+        if state in centersDF['State'].tolist():
+            lat_center=centersDF[centersDF['State']==state]['Latitude']
+            lon_center=centersDF[centersDF['State']==state]['Longitude']
+        i['properties']['lat_center'] = lat_center.values[0]
+        i['properties']['lon_center'] = lon_center.values[0]
     
     return jsonify(geojson)
 

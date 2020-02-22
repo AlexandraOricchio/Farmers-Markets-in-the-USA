@@ -153,11 +153,49 @@ legend.onAdd = function (map) {
 // add legend to map
 legend.addTo(myMap);
 
-
+var mything;
+// geojson promie
 d3.json("geojson").then(function(data) {
     // console.log(data);
     geojson = L.geoJson(data, {
         style: style,
         onEachFeature: onEachFeature}).addTo(myMap);
- 
+    
+    mything=data.features;
 });
+
+// ===================== dropdown handler ========================
+// function to handle event change
+
+const select = document.querySelector('.form-control');
+
+
+select.addEventListener('change', stateZoom);
+
+
+
+function stateZoom(e) {
+    // console.log(e.target.value);
+    // console.log(mything);
+
+    state = e.target.value;
+
+    mything.forEach(function(d) {
+        if (d.properties.name == state) {
+            var lat = d.properties.lat_center;
+            var lon = d.properties.lon_center;
+            console.log(lat);
+            console.log(lon);
+        };
+    });
+    
+    
+    return state
+}
+
+// var dropdown = document.querySelector('#sel1');
+// console.log(dropdown);
+
+// document.getElementById('#sel1').addEventListener('input', stateZoom);
+
+// d3.selectAll('#sel1').on('change',stateZoom);
