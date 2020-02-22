@@ -49,10 +49,10 @@ border-color: black;
   height: 420px;
   padding: 10px;
   margin: 20;  
-  image-orientation: center;
+  image-orientation:initial ;
   text-align: center;  
-  background:rgba(231, 222, 210, 0.822);
-  opacity: 0.6;
+  /* background:rgba(231, 222, 210, 0.822); */
+  opacity: 1;
 }
 
 .h1{
