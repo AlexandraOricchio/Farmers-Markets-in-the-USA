@@ -3,16 +3,20 @@ var products = ["bakedgoods","cheese","crafts","flowers","eggs","seafood","herbs
 "jams","maple","meat","nursery","nuts","plants","poultry","prepared","soap","trees","wine","coffee","beans",
 "fruits","grains","juices","mushrooms","petfood","tofu","wildharvested"];
 
+// var pColors = ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3"];
+// var paymentOptionsColors = {};
+// paymentOptions.forEach(([d, i]) => paymentOptionsColors[d] = pColors[i]);
+
 // svg container
 var svgHeight = 600;
 var svgWidth = 1000;
 
 // margins
 var margin = {
-  top: 50,
-  right: 50,
-  bottom: 100,
-  left: 100
+  top: 30,
+  right: 30,
+  bottom: 50,
+  left: 50
 };
 
 // chart area minus margins
@@ -28,47 +32,26 @@ var svg = d3.select("body").append("svg")
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-// function newLinearScale(data, chosenAxis, xy) 
-// {
-//     // create scales
-//     if (xy === "x")
-//     {
-//         let xLinearScale = d3.scaleLinear()
-//             .domain([d3.min(data, d => d[chosenAxis])*0.9, d3.max(data, d => d[chosenAxis])*1.1])
-//             .range([0, chartWidth]);
-//         return xLinearScale;
-//     }
-//     else
-//     {
-//         let yLinearScale = d3.scaleLinear()
-//             .domain([d3.min(data, d => d[chosenAxis])*0.9, d3.max(data, d => d[chosenAxis])*1.1])
-//             .range([chartHeight, 0]);
-//         return yLinearScale;
-//     }
-// }
-
-// // If xy is not "x", assume y axis change
-// function renderAxes(newScale, axis, xy) 
-// {
-//     if (xy === "x")
-//     {
-//         let bottomAxis = d3.axisBottom(newScale)
-
-//         axis.transition()
-//             .duration(1000)
-//             .call(bottomAxis);
-//         return axis;
-//     }
-//     else
-//     {
-//         let leftAxis = d3.axisLeft(newScale);
-
-//         axis.transition()
-//             .duration(1000)
-//             .call(leftAxis);
-//         return axis;
-//     }
-// }
+function newScale(data, chosenAxis, xy, scaleType) 
+{
+    let theRange = xy === "x" ? [0, chartWidth] : [chartHeight, 0];
+    // create scales
+    if (scaleType === "linear")
+    {
+        let theScale = d3.scaleLinear()
+            .domain([0, d3.max(data, d => d[chosenAxis])*1.1])
+            .range(theRange);
+        return theScale;
+    }
+    else if (scaleType === "band")
+    {
+        let theScale = d3.scaleBand()
+            .domain(data.map(d => d[chosenAxis]))
+            .range(theRange)
+            .padding(0.1);
+        return theScale;
+    }
+}
 
 d3.json("json").then(function(data) {
     // create functions to pull data needed 
@@ -77,25 +60,40 @@ d3.json("json").then(function(data) {
     products.forEach(p => {
         let product = {};
         product["product"] = p;
-        product["count"] = data.filter(d => d[p] === "Y").length;
+        let productData = data.filter(d => d[p] === "Y");
+        product["markets"] = productData.length;
+        paymentOptions.forEach(payment => {
+            product[payment] = productData.filter(d => d[payment] === "Y").length;
+        });
         productCounts.push(product);
     });
-    productCounts.sort((a,b) => b["count"] - a["count"]);
-    console.log(productCounts);
+    productCounts.sort((a,b) => b["markets"] - a["markets"]);
 
-    
+    // console.log(productCounts);
+
+    var color = d3.scaleOrdinal()
+        .domain(paymentOptions)
+        .range(d3.schemeSet2);
+
+    let stackedData = d3.stack()
+        .keys(paymentOptions)(productCounts)
+
+    stackedData.forEach(d => d.sort((a,b) => b.data.markets - a.data.markets));
+    console.log(stackedData);
 
       // Configure a band scale for the horizontal axis with a padding of 0.1 (10%)
+    // let xBandScale = newScale(productCounts, "product", "x", "band")
+    // sorting matters here
     let xBandScale = d3.scaleBand()
-        .domain(productCounts.map(d => d["product"]))
+        .domain(stackedData[0].map(d => d.data.product))
         .range([0, chartWidth])
         .padding(0.1);
 
     // Create a linear scale for the vertical axis.
+    // let yLinearScale = newScale(productCounts, "markets", "y", "linear")
     let yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(productCounts, d => d["count"])])
+        .domain([0, 16000])
         .range([chartHeight, 0]);
-
     let bottomAxis = d3.axisBottom(xBandScale);
     let leftAxis = d3.axisLeft(yLinearScale);
 
@@ -113,17 +111,41 @@ d3.json("json").then(function(data) {
         .classed("y-axis", true)
         .call(leftAxis);
 
-    let rectGroup = chartGroup.selectAll("unused")
-        .data(productCounts)
-        .enter()
-        .append("g");
 
-    rectGroup.append("rect")
-        .attr("width", xBandScale.bandwidth())
-        .attr("height", d => chartHeight - yLinearScale(d["count"]))
-        .attr("x", d => xBandScale(d["product"]))
-        .attr("y", d => yLinearScale(d["count"]))
-        .attr("class", "bar");
+
+
+    // for a stacked bar chart, need to first add groups first and then rects for each segment
+    let superGroup = chartGroup.append("g")
+        .selectAll("g")
+        .data(stackedData)
+        .enter()
+        .append("g")
+        .attr("fill", d => color(d.key))
+        .attr("class", d => "myRect " + d.key ); // Add a class to each subgroup: their name
+         
+    let rectGroup = superGroup.selectAll("rect")
+        // enter a second time = loop subgroup per subgroup to add all rectangles
+        .data(d => d)
+        .enter()
+        .append("rect")
+        .attr("x", d => xBandScale(d.data.product)) // data was sorted when entered into xBandScale
+        .attr("y", d => yLinearScale(d[1]))
+        .attr("height", d => yLinearScale(d[0]) - yLinearScale(d[1]))
+        .attr("width", xBandScale.bandwidth());
+
+    // let rectGroup = chartGroup.selectAll("unused")
+    //     .data(productCounts)
+    //     .enter()
+    //     .append("g");
+
+
+    // rectGroup.append("rect")
+    //     .attr("width", xBandScale.bandwidth())
+    //     .attr("height", d => chartHeight - yLinearScale(d["markets"]))
+    //     .attr("x", d => xBandScale(d["product"]))
+    //     .attr("y", d => yLinearScale(d["markets"]))
+    //     .attr("class", "bar");
+
 
     // rectGroup.append("text")
     //     .attr("dx", d => xBandScale(d["product"]))
@@ -133,6 +155,69 @@ d3.json("json").then(function(data) {
     //     .style("text-anchor", "start")
     //     .attr("transform", 
     //         d => `translate(${xBandScale(d["product"])},${chartHeight}) rotate(-65)`);
+
+    let yLabelsGroup = chartGroup.append("g")
+    // .attr("transform", `translate(300, 1000)`)
+    .attr("transform", "rotate(-90)");  
+
+    let yLabels = ["markets", "paymentOptions"]
+
+    let marketsLabel = yLabelsGroup.append("text")
+        .attr("x", -chartHeight/2)
+        .attr("y", -30)
+        .attr("value", "markets") // value to grab for event listener
+        .classed("active", true)
+        .text("Markets Sold In");
+    let paymentsLabel = yLabelsGroup.append("text")
+        .attr("x", -chartHeight/2)
+        .attr("y", -50)
+        .attr("value", "payments") // value to grab for event listener
+        .classed("active", false)
+        .text("Payment Types Accepted");
+
+    yLabelsGroup.selectAll("text").on("click", function() 
+    {
+        // get value of selection
+        var value = d3.select(this).attr("value");
+        // console.log(value)
+        if (value !== chosenYAxis) 
+        {
+            // replaces chosenYAxis with value
+            chosenYAxis = value;
+
+            // functions here found above csv import
+            // updates y scale for new data
+            yLinearScale = newScale(data, chosenYAxis, "y", );
+
+            // updates y axis with transition
+            yAxis = renderAxes(yLinearScale, yAxis, "y");
+
+            // updates circles with new y values
+            circlesGroup = renderCircles(circlesGroup, yLinearScale, chosenYAxis, "y");
+
+
+            // updates tooltips with new info
+            // circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+            // changes classes to change bold text
+            yLabels.forEach(label =>
+            {
+                if (label != chosenYAxis)
+                {
+                    // CSS selector
+                    yLabelsGroup.selectAll(`text[value='${label}'`)
+                        .classed("active", false)
+                        .classed("inactive", true);
+                }
+                else
+                {
+                    yLabelsGroup.selectAll(`text[value='${label}'`)
+                        .classed("active", true)
+                        .classed("inactive", false);
+                }
+            });
+        }
+    });
 });
 
 

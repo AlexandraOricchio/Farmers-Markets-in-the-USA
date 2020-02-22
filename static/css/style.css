@@ -10,9 +10,9 @@ body {
   }
 
   .bar {
-    fill: orange;
+    fill: #00441B;
   }
   
   .bar:hover {
-    fill: green;
+    fill: orange;
   }
