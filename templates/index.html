@@ -16,22 +16,21 @@
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="../static/css/style.css">
-  <!-- Marker Cluster JS & CSS -->
-  <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.css">
-  <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css">
   <!-- jquery JS  -->
   <script src="../static/js/jquery-3.4.1.min.js"></script>
 </head>
+
 <body>   
     <!-- header image -->
-  <div id="header" class="container">     
-      <img src= "/static/images/farmer2.jpg"height="350", width="800" >
+  <div id="header">     
+      <img src= "/static/images/farmer2.jpg" height="250" width="700">
   </div>
 
-   <!-- Select state -->
-  <div class="col-sm-2">
-    <h4>This directory gives us information about the location of farmers markets across the United States. </h5>
+  <div class="container-fluid">
+  <div class="row">
+  <!-- Select state -->
+  <div id="side-bar" class="col-sm-2">
+    <h4>This directory gives us information about the location of farmers markets across the United States. </h4>
     <h3>Locate your market!</h3>
     <!-- Select List of States-->
     <div class="form-group">
@@ -91,66 +90,6 @@
       </select>
     </div>
 
-    <!-- Check Boxes -->
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="vegetables" checked>
-      <label class="form-check-label" for="vegetables">
-        Vegetables
-      </label>
-    </div>
-
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="wine">
-      <label class="form-check-label" for="defaultCheck1">
-        Wine
-      </label>
-    </div>
-
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="seafood">
-      <label class="form-check-label" for="seafood">
-        Seafood
-      </label>
-    </div>
-
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="flowers">
-      <label class="form-check-label" for="flowers">
-        Flowers
-      </label>
-      </div>
-
-
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="poultry">
-        <label class="form-check-label" for="poultry">
-          Poultry
-        </label>
-      </div>
-
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="pet-food">
-        <label class="form-check-label" for="pet-food">
-          Pet Food
-        </label>
-      </div>
-
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="organic">
-        <label class="form-check-label" for="organic">
-          Organic
-        </label>
-      </div>    
-
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="grains">
-        <label class="form-check-label" for="grains">
-          Grains
-        </label>
-      </div>    
-
-      <button type="button" class="btn btn-success">SEARCH</button>
-
         <!-- market info -->
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -162,42 +101,42 @@
           </table>
         </div>
       </div>
-    </div>
 
-
-  <!-- The div that holds our map --> 
-    <div id="map"></div>
-
-    <!-- market info -->
-    <!-- <div class="panel panel-primary">
-      <div class="panel-heading">
-        <h3 class="panel-title">Market Info:</h3>
-      </div>
-      <div id="market-info" class="panel-body">
-        <table class="table-condensed">
+      <!-- market table -->
+      <div id="table">
+        <table id="market-table" class="table table-hover">
           <tbody></tbody>
         </table>
       </div>
-    </div> -->
 
-  <!-- market table -->
-    <div id="table" class="col-2">
-      <table id="market-table" class="table table-hover">
-        <tbody></tbody>
-      </table>
+
+    <!-- closing side bar  -->
     </div>
 
-  <!-- graphs -->
-    <div class="graph col-10"></div>
+    <div class="col-9">
+      <div class="row">
+        <div id="map"></div>
+        <div class="graph"></div>
+      </div>
+    </div>
+
+
+    <!-- closing row -->
+  </div>
+  <!-- closing fluid container -->
+  </div>
+
+
+
 
     <!-- images -->
-  <div class="container">
+  <!-- <div class="container">
     <div class="row">
       <div class="col-sm-1">
         
       </div>
       <div class="col-md-3">
-        <img src= "/static/images/plants_trees.jpg"height="260" width="380" >
+        <img src= "/static/images/plants_trees.jpg" height="260" width="380" >
 
       </div>
       <div class="col-md-3">
@@ -211,11 +150,11 @@
 
 
     </div>
-    <!-- images -->
-  </div>
+
+  </div> -->
 
    <!-- Footer -->
-<footer class="page-footer font-small cyan darken-3">
+<!-- <footer class="page-footer font-small cyan darken-3">
   
   <div class="container">
 
@@ -231,7 +170,7 @@
     </div>    
   </div>
   
-</footer> 
+</footer>  -->
 
   <!-- Our JavaScript -->
   <script type="text/javascript" src="../static/js/config.js"></script>

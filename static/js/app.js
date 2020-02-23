@@ -183,6 +183,7 @@ d3.json("geojson").then(function(data) {
         state=e.target.value;
         var table = d3.select("#market-table");
         var tbody = table.select("tbody");
+        console.log(select);
         tbody.html("");
         geojson.eachLayer(function (layer) {
             if (layer.feature.properties.name == state) {

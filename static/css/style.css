@@ -6,11 +6,28 @@ body {
     background-attachment: fixed;   
   }
   
+  #header{
+    text-align: center;   
+  }
+
+  /* styling must match class levels for map  */
   #map,
+  .row,
+  .col-9,
+  .row,
+  .container-fluid,
   body,
   html {
-    height: 80%;
+    height: 90%;
+    /* z-index: -1; */
+    /* position: relative; */
   }
+
+
+#side-bar{
+  background:rgb(134, 163, 134);  
+  margin-left: 10px;
+}
 
 .info {
   padding: 6px 8px;
@@ -38,16 +55,8 @@ margin-right: 8px;
 opacity: 0.7;
 }
 
-#header{
-  width: 50;
-  margin: 50;  
-  height: 380px;
-  padding: 10px;
-  margin: 20;  
-  image-orientation:initial ;
-  text-align: center;   
-}
 
+/* 
 .footer{
   background-color: rgba(139, 71, 25, 0.733);
   text-emphasis-color: white;  
@@ -66,13 +75,9 @@ opacity: 0.7;
 .h2{
   font-size:0.05rem ;
 
-}
-.col-sm-2{
-  background:rgb(134, 163, 134);  
-  margin-top: 10px;
-  margin-left: 10px;
-}
-.col-md-2{
+} */
+
+/* .col-md-2{
   background:rgb(187, 197, 187); 
   height:400 ; 
   width: 400;
@@ -89,12 +94,9 @@ opacity: 0.7;
   margin-right: 5px;
   width: 350;
   height: 260;
-}
+} */
 
-.btn-succes{
-  box-sizing: 10;
-
-}
+/* 
 @keyframes title {
   from {
     opacity: 0;
@@ -104,4 +106,4 @@ opacity: 0.7;
     font-size: 7.5rem;
     opacity: 1;
   }
-}
+} */
