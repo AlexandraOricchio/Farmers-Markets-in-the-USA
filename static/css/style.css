@@ -4,7 +4,6 @@ body {
     background-color: rgba(240, 227, 211, 0.822);
     background-image: url("../images/fruit-bgs.png");
     background-attachment: fixed;   
-
   }
   
   #map,
@@ -39,27 +38,18 @@ margin-right: 8px;
 opacity: 0.7;
 }
 
-.div {
-  opacity:0 ;
-}
-
-<<<<<<< HEAD
-.container{
-  width: 300;
-  margin: 10;  
-=======
 #header{
   width: 50;
   margin: 50;  
->>>>>>> bc034f5ce09ba15f52fd64be4113d5ed01e15d27
   height: 380px;
   padding: 10px;
   margin: 20;  
   image-orientation:initial ;
   text-align: center;   
 }
+
 .footer{
-  background-color: rgb(145, 96, 64);
+  background-color: rgba(139, 71, 25, 0.733);
   text-emphasis-color: white;  
 }
 
@@ -89,7 +79,17 @@ opacity: 0.7;
   margin-top: 10px;
   margin-left: 5px;
 }
-
+.col-md-12{  
+  background-image:url("../images/old_wood.jpg") ;
+  font-size: 18px;
+  margin-top: 5px;  
+}
+.col-md-3{
+  margin-left: 10px;
+  margin-right: 5px;
+  width: 350;
+  height: 260;
+}
 
 .btn-succes{
   box-sizing: 10;
