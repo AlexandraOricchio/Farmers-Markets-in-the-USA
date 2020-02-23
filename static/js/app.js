@@ -31,7 +31,7 @@
 // create map object
 var myMap = L.map('map', {
     center: [37.09, -95.71],
-    zoom: 5
+    zoom: 4
 });
 
 // add tile layer to the map
@@ -85,6 +85,7 @@ function highlightFeature(e) {
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
+
     // updating control based on state mouse is hovered over
     info.update(layer.feature.properties);
 }
@@ -121,9 +122,11 @@ info.onAdd = function (map) {
     return this._div;
 };
 
+
+
 // updates the control based on feature properties passed 
 info.update = function (props) {
-    this._div.innerHTML = '<h4>US Farmers Markets</h4>' +  (props ?
+    this._div.innerHTML = '<h5>US Farmers Markets</h5>' +  (props ?
         '<b>' + props.name + '</b><br />' + props.markets + ' Markets' + '<br/>' + Math.round(props.marketsPerCap) + ' Markets per 100,000'
         : 'Hover over a state');
 };
@@ -138,7 +141,7 @@ legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'info legend'),
         grades = [0, 1, 2, 3, 4, 5, 6, 7, 8],
         labels = [];
-    var legendInfo= '<h4>Markets <br/> Per 100,000</h4>'
+    var legendInfo= '<h5>Markets <br/> Per 100,000</h5>'
     div.innerHTML = legendInfo;
 
     // loop through our per 100k intervals & generate a label with a colored square for each interval
@@ -153,49 +156,265 @@ legend.onAdd = function (map) {
 // add legend to map
 legend.addTo(myMap);
 
-var mything;
+// function marketTable(dict) {
+//     for (var i=0, i>)
+// }
+
+
+// var mything;
+
 // geojson promie
 d3.json("geojson").then(function(data) {
-    // console.log(data);
+    // console.log(data.features);
     geojson = L.geoJson(data, {
         style: style,
         onEachFeature: onEachFeature}).addTo(myMap);
     
-    mything=data.features;
+    geojson.eachLayer(function (layer) {
+        layer._path.id = layer.feature.properties.name;
+        // layerbound = layer.getBounds();
+        });
+
+    // event listener for drop down selection
+    const select = document.querySelector('.form-control');
+    select.addEventListener('change', stateZoom);
+
+    // state dropdown handler function
+    function stateZoom(e) {
+        state=e.target.value;
+        var table = d3.select("#market-table");
+        var tbody = table.select("tbody");
+        tbody.html("");
+        geojson.eachLayer(function (layer) {
+            if (layer.feature.properties.name == state) {
+                myMap.fitBounds(layer.getBounds());
+                var markets_dicts = layer.feature.properties.market_list;
+                // console.log(markets_dicts);
+                markets_dicts.forEach(function(dict) {
+                    var mar_lat=dict.y;
+                    var mar_lon=dict.x;
+                    var mar_name=dict.marketname;
+                    var mar_city=dict.city;
+                    if (mar_lat != null || mar_lon != null) {
+                        var marketMarker= L.marker([mar_lat, mar_lon]);
+                        marketMarker.addTo(myMap);
+                        var row = tbody.append("tr");
+                        var cell = row.append("td").text(`${mar_name}`);
+                    }
+                });
+            }
+        });
+    }
+
+    // event listener for table
+    const table = document.querySelector('#market-table');
+    table.addEventListener('click', marketlisting);
+
+    // market table click handler function
+    function marketlisting(e) {
+        name = e.target.value;
+        console.log(name);
+    }
+
+    
+
+    // mything=data.features;
 });
 
-// ===================== dropdown handler ========================
-// function to handle event change
+// ==================== CHARTS =================================================================
+// ==================== Arrays of all products and payment types ====================
+var paymentOptions = ["credit","wic","wiccash","sfmnp","snap"];
+var products = ["bakedgoods","cheese","crafts","flowers","eggs","seafood","herbs","vegetables","honey",
+"jams","maple","meat","nursery","nuts","plants","poultry","prepared","soap","trees","wine","coffee","beans",
+"fruits","grains","juices","mushrooms","petfood","tofu","wildharvested"];
 
-const select = document.querySelector('.form-control');
+// var pColors = ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3"];
+// var paymentOptionsColors = {};
+// paymentOptions.forEach(([d, i]) => paymentOptionsColors[d] = pColors[i]);
 
+// svg container
+var svgHeight = 600;
+var svgWidth = 1000;
 
-select.addEventListener('change', stateZoom);
+// margins
+var margin = {
+  top: 30,
+  right: 30,
+  bottom: 50,
+  left: 50
+};
 
+// chart area minus margins
+var chartHeight = svgHeight - margin.top - margin.bottom;
+var chartWidth = svgWidth - margin.left - margin.right;
 
+// create svg container
+var svg = d3.select(".graph").append("svg")
+    .attr("height", svgHeight)
+    .attr("width", svgWidth);
 
-function stateZoom(e) {
-    // console.log(e.target.value);
-    // console.log(mything);
+// shift everything over by the margins
+var chartGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    state = e.target.value;
+chartGroup.attr("fill", "white");
 
-    mything.forEach(function(d) {
-        if (d.properties.name == state) {
-            var lat = d.properties.lat_center;
-            var lon = d.properties.lon_center;
-            console.log(lat);
-            console.log(lon);
-        };
+// function newScale(data, chosenAxis, xy, scaleType) 
+// {
+//     let theRange = xy === "x" ? [0, chartWidth] : [chartHeight, 0];
+//     // create scales
+//     if (scaleType === "linear")
+//     {
+//         let theScale = d3.scaleLinear()
+//             .domain([0, d3.max(data, d => d[chosenAxis])*1.1])
+//             .range(theRange);
+//         return theScale;
+//     }
+//     else if (scaleType === "band")
+//     {
+//         let theScale = d3.scaleBand()
+//             .domain(data.map(d => d[chosenAxis]))
+//             .range(theRange)
+//             .padding(0.1);
+//         return theScale;
+//     }
+// }
+
+d3.json("json").then(function(data) {
+    // create functions to pull data needed 
+
+    // productCounts is an array of objects for each product, where each object contains the total number 
+    // of markets each product is sold in and the total number of markets accepting each payment type for that
+    // product.
+    let productCounts = [];
+    products.forEach(p => {
+        let product = {};
+        product["product"] = p;
+        let productData = data.filter(d => d[p] === "Y");
+        product["markets"] = productData.length;
+        paymentOptions.forEach(payment => {
+            product[payment] = productData.filter(d => d[payment] === "Y").length;
+        });
+        productCounts.push(product);
     });
+    productCounts.sort((a,b) => b["markets"] - a["markets"]);
+
+    console.log(productCounts);
+
+    var color = d3.scaleOrdinal()
+        .domain(paymentOptions)
+        .range(d3.schemePaired);
+    console.log(d3.schemePaired);
+    // for creating stacked bar charts
+    let stackedData = d3.stack()
+        .keys(paymentOptions)(productCounts)
+
+    stackedData.forEach(d => d.sort((a,b) => b.data.markets - a.data.markets));
+    // console.log(stackedData);
+
+    // Configure a band scale for the horizontal axis with a padding of 0.1 (10%)
+    // let xBandScale = newScale(productCounts, "product", "x", "band")
+    // sorting matters here
+    let xBandScale = d3.scaleBand()
+        .domain(stackedData[0].map(d => d.data.product))
+        .range([0, chartWidth])
+        .padding(0.1);
+
+    // Create a linear scale for the vertical axis.
+    // let yLinearScale = newScale(productCounts, "markets", "y", "linear")
+    let yLinearScale = d3.scaleLinear()
+        .domain([0, 16000])
+        .range([chartHeight, 0]);
+    let bottomAxis = d3.axisBottom(xBandScale);
+    let leftAxis = d3.axisLeft(yLinearScale);
+
+    let xAxis = chartGroup.append("g")
+        .classed("x-axis", true)
+        .attr("transform", `translate(0, ${chartHeight})`)
+        .call(bottomAxis)
+        .selectAll("text")  
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
+        
+    let yAxis = chartGroup.append("g")
+        .classed("y-axis", true)
+        .call(leftAxis);
+
+
+
+
+    // for a stacked bar chart, need to first add groups first and then rects for each segment
+    let superGroup = chartGroup.append("g")
+        .selectAll("g")
+        .data(stackedData)
+        .enter()
+        .append("g")
+        .attr("fill", d => color(d.key))
+        .attr("class", d => "myRect " + d.key ); // Add a class to each subgroup: their name
+         
+    let rectGroup = superGroup.selectAll("rect")
+        // enter a second time = loop subgroup per subgroup to add all rectangles
+        .data(d => d)
+        .enter()
+        .append("rect")
+        .attr("x", d => xBandScale(d.data.product)) // data was sorted when entered into xBandScale
+        .attr("y", d => yLinearScale(d[1]))
+        .attr("height", d => yLinearScale(d[0]) - yLinearScale(d[1]))
+        .attr("width", xBandScale.bandwidth());
+
+
+
+    let legend = chartGroup.selectAll(".legend")
+        .data(d3.schemePaired.slice(0,5))
+        .enter().append("g")
+        .attr("class", "legend")
+        .attr("transform", function(d, i) { return "translate(30," + i * 19 + ")"; });
     
+    legend.append("rect")
+        .attr("x", chartWidth - 100)
+        .attr("width", 18)
+        .attr("height", 18)
+        .style("fill", function(d, i) {return d3.schemePaired.slice(0,5).slice().reverse()[i];});
     
-    return state
-}
+    legend.append("text")
+        .attr("x", chartWidth - 75)
+        .attr("y", 9)
+        .attr("dy", ".35em")
+        .style("text-anchor", "start")
+        .text(function(d, i) { 
+            switch (i) {
+                case 0: return "SNAP";
+                case 1: return "SFMNP";
+                case 2: return "WICCash";
+                case 3: return "WIC";
+                case 4: return "Credit";
+            }
+        });
 
-// var dropdown = document.querySelector('#sel1');
-// console.log(dropdown);
 
-// document.getElementById('#sel1').addEventListener('input', stateZoom);
+    // standard bar chart: number of markets each product is sold in
 
-// d3.selectAll('#sel1').on('change',stateZoom);
+    // let rectGroup = chartGroup.selectAll("unused")
+    //     .data(productCounts)
+    //     .enter()
+    //     .append("g");
+
+    // rectGroup.append("rect")
+    //     .attr("width", xBandScale.bandwidth())
+    //     .attr("height", d => chartHeight - yLinearScale(d["markets"]))
+    //     .attr("x", d => xBandScale(d["product"]))
+    //     .attr("y", d => yLinearScale(d["markets"]))
+    //     .attr("class", "bar");
+
+
+    // rectGroup.append("text")
+    //     .attr("dx", d => xBandScale(d["product"]))
+    //     .attr("dy", chartHeight + 12)
+    //     .attr("font-size", "12px")
+    //     .text(d => d["product"])
+    //     .style("text-anchor", "start")
+    //     .attr("transform", 
+    //         d => `translate(${xBandScale(d["product"])},${chartHeight}) rotate(-65)`);
+});

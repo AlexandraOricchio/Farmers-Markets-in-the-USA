@@ -22,7 +22,7 @@ body {
   border-radius: 5px;
   color: black;
 }
-.info h4 {
+.info h5 {
   margin: 0 0 5px;
   color: rgb(3, 0, 0);
   text-align: center;
@@ -43,7 +43,7 @@ opacity: 0.7;
   opacity:0 ;
 }
 
-.container{
+#header{
   width: 50;
   margin: 50;  
   height: 420px;
@@ -65,7 +65,7 @@ opacity: 0.7;
   font-size:0.05rem ;
 
 }
-.col-md-2{
+.col-sm-2{
   background:rgb(134, 163, 134);
 }
 .btn-succes{
