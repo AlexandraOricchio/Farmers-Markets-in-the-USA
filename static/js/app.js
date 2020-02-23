@@ -172,7 +172,6 @@ d3.json("geojson").then(function(data) {
     
     geojson.eachLayer(function (layer) {
         layer._path.id = layer.feature.properties.name;
-        // layerbound = layer.getBounds();
         });
 
     // event listener for drop down selection
@@ -189,7 +188,6 @@ d3.json("geojson").then(function(data) {
             if (layer.feature.properties.name == state) {
                 myMap.fitBounds(layer.getBounds());
                 var markets_dicts = layer.feature.properties.market_list;
-                // console.log(markets_dicts);
                 markets_dicts.forEach(function(dict) {
                     var mar_lat=dict.y;
                     var mar_lon=dict.x;
@@ -206,20 +204,50 @@ d3.json("geojson").then(function(data) {
         });
     }
 
-    // event listener for table
-    const table = document.querySelector('#market-table');
-    table.addEventListener('click', marketlisting);
+    // handles click on table row and populates market info table
+    $(document).ready(function(){
+        $(document).on('click', 'td', function(){
+            var name = $(this).text();
+            var table = d3.select("#market-info");
+            var tbody = table.select("tbody");
+            tbody.html("");
+            states=data.features;
+            states.forEach(function(x) {
+                markets = x.properties.market_list;
+                markets.forEach(function(y) {
+                    Object.entries(y).forEach(([key,value]) => {
+                        var dict;
+                        if (value==name) {
+                            dict = y;
+                            console.log(dict);
+                            mar_name = value;
+                            mar_city = y.city;
+                            mar_street = y.street;
+                            mar_season = y.season1date;
+                            mar_time = y.season1time;
+                            var row = tbody.append("tr");
+                            row.append("td").text(`Market: ${mar_name} City: ${mar_city} Street: ${mar_street} Season: ${mar_season} Hours of Operation: ${mar_time}`);
+                            // row.append("td").text(`Market: ${mar_name}`);
+                            // row.append("td").text(`City: ${mar_city}`);
+                            // row.append("td").text(`Street: ${mar_street}`);
+                            // row.append("td").text(`Season: ${mar_season}`);
+                            // row.append("td").text(`Hours of Operation: ${mar_time}`);
+                            // console.log(mar_city);
+                        };
+                    });
 
-    // market table click handler function
-    function marketlisting(e) {
-        name = e.target.value;
-        console.log(name);
-    }
+                });
+            });
 
-    
+        });
+    })
 
-    // mything=data.features;
+
+
+// close promise 
 });
+
+
 
 // ==================== CHARTS =================================================================
 // ==================== Arrays of all products and payment types ====================
@@ -231,6 +259,10 @@ var products = ["bakedgoods","cheese","crafts","flowers","eggs","seafood","herbs
 // var pColors = ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3"];
 // var paymentOptionsColors = {};
 // paymentOptions.forEach(([d, i]) => paymentOptionsColors[d] = pColors[i]);
+var color = d3.scaleOrdinal()
+    .domain(paymentOptions)
+    .range(d3.schemePaired);
+
 
 // svg container
 var svgHeight = 600;
@@ -252,45 +284,21 @@ var chartWidth = svgWidth - margin.left - margin.right;
 var svg = d3.select(".graph").append("svg")
     .attr("height", svgHeight)
     .attr("width", svgWidth);
+svg.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "#86A386");
 
 // shift everything over by the margins
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-chartGroup.attr("fill", "white");
-
-// function newScale(data, chosenAxis, xy, scaleType) 
-// {
-//     let theRange = xy === "x" ? [0, chartWidth] : [chartHeight, 0];
-//     // create scales
-//     if (scaleType === "linear")
-//     {
-//         let theScale = d3.scaleLinear()
-//             .domain([0, d3.max(data, d => d[chosenAxis])*1.1])
-//             .range(theRange);
-//         return theScale;
-//     }
-//     else if (scaleType === "band")
-//     {
-//         let theScale = d3.scaleBand()
-//             .domain(data.map(d => d[chosenAxis]))
-//             .range(theRange)
-//             .padding(0.1);
-//         return theScale;
-//     }
-// }
-
-d3.json("json").then(function(data) {
-    // create functions to pull data needed 
-
-    // productCounts is an array of objects for each product, where each object contains the total number 
-    // of markets each product is sold in and the total number of markets accepting each payment type for that
-    // product.
-    let productCounts = [];
+function countProducts(data, state) {
+    let productCounts = []
     products.forEach(p => {
         let product = {};
         product["product"] = p;
-        let productData = data.filter(d => d[p] === "Y");
+        let productData = data.filter(d => !!state ? d[p] === "Y" && d["state"] === state : d[p] === "Y" );
         product["markets"] = productData.length;
         paymentOptions.forEach(payment => {
             product[payment] = productData.filter(d => d[payment] === "Y").length;
@@ -298,37 +306,31 @@ d3.json("json").then(function(data) {
         productCounts.push(product);
     });
     productCounts.sort((a,b) => b["markets"] - a["markets"]);
+    return productCounts;
+}
 
-    console.log(productCounts);
+function updateStandard(data, selection) {
+    if (!!selection) {
+        var state = d3.select(selection).property("value");
+        console.log(state);
+        var productsCounts = countProducts(data, state);
+    }
+    else {
+        var productsCounts = countProducts(data);
+    }
 
-    var color = d3.scaleOrdinal()
-        .domain(paymentOptions)
-        .range(d3.schemePaired);
-    console.log(d3.schemePaired);
-    // for creating stacked bar charts
-    let stackedData = d3.stack()
-        .keys(paymentOptions)(productCounts)
-
-    stackedData.forEach(d => d.sort((a,b) => b.data.markets - a.data.markets));
-    // console.log(stackedData);
-
-    // Configure a band scale for the horizontal axis with a padding of 0.1 (10%)
-    // let xBandScale = newScale(productCounts, "product", "x", "band")
-    // sorting matters here
-    let xBandScale = d3.scaleBand()
-        .domain(stackedData[0].map(d => d.data.product))
+    chartGroup.selectAll("*").remove();
+    var xBandScale = d3.scaleBand()
+        .domain(productsCounts.map(d => d["product"]))
         .range([0, chartWidth])
         .padding(0.1);
-
-    // Create a linear scale for the vertical axis.
-    // let yLinearScale = newScale(productCounts, "markets", "y", "linear")
-    let yLinearScale = d3.scaleLinear()
-        .domain([0, 16000])
+    var yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(productsCounts.map(d => d["markets"]))*1.1])
         .range([chartHeight, 0]);
-    let bottomAxis = d3.axisBottom(xBandScale);
-    let leftAxis = d3.axisLeft(yLinearScale);
+    var bottomAxis = d3.axisBottom(xBandScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
 
-    let xAxis = chartGroup.append("g")
+    var xAxis = chartGroup.append("g")
         .classed("x-axis", true)
         .attr("transform", `translate(0, ${chartHeight})`)
         .call(bottomAxis)
@@ -342,19 +344,85 @@ d3.json("json").then(function(data) {
         .classed("y-axis", true)
         .call(leftAxis);
 
+    let rectGroup = chartGroup.selectAll("unused")
+        .data(productsCounts)
+        .enter()
+        .append("g");
 
+    rectGroup.append("rect")
+        .attr("width", xBandScale.bandwidth())
+        .attr("height", d => chartHeight - yLinearScale(d["markets"]))
+        .attr("x", d => xBandScale(d["product"]))
+        .attr("y", d => yLinearScale(d["markets"]))
+        .attr("class", "bar");
+    
+    rectGroup.append("text")
+        .attr("x", chartWidth / 2)             
+        .attr("y", 20)
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("text-decoration", "underline")  
+        .text(`Number of Markets Where Each Product Is Sold${!!selection ? " In " + state : ""}`);
+}
 
+function updateStacked(data, selection) {
+    if (!!selection) {
+        var state = d3.select(selection).property("value");
+        console.log(state);
+        var productsCounts = countProducts(data, state);
+    }
+    else {
+        var productsCounts = countProducts(data);
+    }
+
+    var stackedData = d3.stack()
+        .keys(paymentOptions)(productsCounts)
+    stackedData.forEach(d => d.sort((a,b) => b.data.markets - a.data.markets));
+
+    var allPaymentSums = [];
+    productsCounts.forEach(p => {
+        let allPayments = 0;
+        paymentOptions.forEach(payment => {
+            allPayments += p[payment]
+        });
+        allPaymentSums.push(allPayments);
+    });
+
+    chartGroup.selectAll("*").remove();
+    var xBandScale = d3.scaleBand()
+        .domain(stackedData[0].map(d => d.data.product))
+        .range([0, chartWidth])
+        .padding(0.1);
+    var yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(allPaymentSums)])
+        .range([chartHeight, 0]);
+    var bottomAxis = d3.axisBottom(xBandScale);
+    var leftAxis = d3.axisLeft(yLinearScale);
+
+    var xAxis = chartGroup.append("g")
+        .classed("x-axis", true)
+        .attr("transform", `translate(0, ${chartHeight})`)
+        .call(bottomAxis)
+        .selectAll("text")  
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
+        
+    let yAxis = chartGroup.append("g")
+        .classed("y-axis", true)
+        .call(leftAxis);
 
     // for a stacked bar chart, need to first add groups first and then rects for each segment
-    let superGroup = chartGroup.append("g")
+    var superGroup = chartGroup.append("g")
         .selectAll("g")
         .data(stackedData)
         .enter()
         .append("g")
         .attr("fill", d => color(d.key))
         .attr("class", d => "myRect " + d.key ); // Add a class to each subgroup: their name
-         
-    let rectGroup = superGroup.selectAll("rect")
+            
+    var rectGroup = superGroup.selectAll("rect")
         // enter a second time = loop subgroup per subgroup to add all rectangles
         .data(d => d)
         .enter()
@@ -364,9 +432,7 @@ d3.json("json").then(function(data) {
         .attr("height", d => yLinearScale(d[0]) - yLinearScale(d[1]))
         .attr("width", xBandScale.bandwidth());
 
-
-
-    let legend = chartGroup.selectAll(".legend")
+    var legend = chartGroup.selectAll(".legend")
         .data(d3.schemePaired.slice(0,5))
         .enter().append("g")
         .attr("class", "legend")
@@ -392,29 +458,24 @@ d3.json("json").then(function(data) {
                 case 4: return "Credit";
             }
         });
+}
 
 
-    // standard bar chart: number of markets each product is sold in
+d3.json("json").then(function(data) {
+    // Initial standard bar chart: number of markets each product is sold in
+    let chartType = "standard";
+    updateStandard(data);
+    
+    // for creating stacked bar charts
+    // updateStacked(data);
 
-    // let rectGroup = chartGroup.selectAll("unused")
-    //     .data(productCounts)
-    //     .enter()
-    //     .append("g");
-
-    // rectGroup.append("rect")
-    //     .attr("width", xBandScale.bandwidth())
-    //     .attr("height", d => chartHeight - yLinearScale(d["markets"]))
-    //     .attr("x", d => xBandScale(d["product"]))
-    //     .attr("y", d => yLinearScale(d["markets"]))
-    //     .attr("class", "bar");
-
-
-    // rectGroup.append("text")
-    //     .attr("dx", d => xBandScale(d["product"]))
-    //     .attr("dy", chartHeight + 12)
-    //     .attr("font-size", "12px")
-    //     .text(d => d["product"])
-    //     .style("text-anchor", "start")
-    //     .attr("transform", 
-    //         d => `translate(${xBandScale(d["product"])},${chartHeight}) rotate(-65)`);
+    // TODO: add event listener for changing between standard and stacked types. 
+    d3.select(".form-control").on("change", function() {
+        if (chartType === "standard") {
+            updateStandard(data, this);
+        }
+        else if (chartType === "stacked") {
+            updateStacked(data, this);
+        }
+    });
 });
