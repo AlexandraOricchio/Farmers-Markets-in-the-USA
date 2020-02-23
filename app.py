@@ -106,6 +106,14 @@ def state_geojson():
             lon_center=centersDF[centersDF['State']==state]['Longitude']
         i['properties']['lat_center'] = lat_center.values[0]
         i['properties']['lon_center'] = lon_center.values[0]
+
+    for i in geojson["features"]:
+        market_list=[]
+        state=i["properties"]["name"]
+        for market in all_markets:
+            if market["state"]==state:
+                market_list.append(market)
+            i["properties"]["market_list"]=market_list
     
     return jsonify(geojson)
 
