@@ -1,32 +1,3 @@
-// =================== Create Markers Function =======================
-// function createMarkers(data) {
-//     var coordinateMarkers = [];
-
-//     for (var index=0; index<data.length; index++) {
-//         var market = data[index];
-//         var marketMarker = L.marker([market.y, market.x])
-//         coordinateMarkers.push(marketMarker);
-//     };
-//     coordinateMarkers.forEach(function(m) {
-//         m.addTo(myMap);
-//     });
-// }
-
-// d3.json("json").then(function(data) {
-//     // console.log(data);
-//     data.forEach(function(d,i) {
-//         d.x = +d.x;
-//         d.y = +d.y;
-//         // create dict of states & market counts
-//         if(!counts[d.state]) {
-//             counts[d.state] = 1;
-//         }
-//         else counts[d.state] = ++counts[d.state];
-//     });
-//     // createMarkers(data);
-// });
-
-
 // =========================== MAP =======================================
 // create map object
 var myMap = L.map('map', {
@@ -113,7 +84,7 @@ function onEachFeature(feature, layer) {
 }
 
 //===================== INFO CONTROL =================
-var info = L.control();
+var info = L.control({position: 'bottomleft'});
 
 // creating a div with class "info"
 info.onAdd = function (map) {
@@ -156,14 +127,8 @@ legend.onAdd = function (map) {
 // add legend to map
 legend.addTo(myMap);
 
-// function marketTable(dict) {
-//     for (var i=0, i>)
-// }
 
-
-// var mything;
-
-// geojson promie
+// =================== geojson promise ==================================
 d3.json("geojson").then(function(data) {
     // console.log(data.features);
     geojson = L.geoJson(data, {
@@ -212,6 +177,7 @@ d3.json("geojson").then(function(data) {
             var table = d3.select("#market-info");
             var tbody = table.select("tbody");
             tbody.html("");
+            // var row = tbody.append("tr");
             states=data.features;
             states.forEach(function(x) {
                 markets = x.properties.market_list;
@@ -227,13 +193,7 @@ d3.json("geojson").then(function(data) {
                             mar_season = y.season1date;
                             mar_time = y.season1time;
                             var row = tbody.append("tr");
-                            row.append("td").text(`Market: ${mar_name} City: ${mar_city} Street: ${mar_street} Season: ${mar_season} Hours of Operation: ${mar_time}`);
-                            // row.append("td").text(`Market: ${mar_name}`);
-                            // row.append("td").text(`City: ${mar_city}`);
-                            // row.append("td").text(`Street: ${mar_street}`);
-                            // row.append("td").text(`Season: ${mar_season}`);
-                            // row.append("td").text(`Hours of Operation: ${mar_time}`);
-                            // console.log(mar_city);
+                            row.append("td").html('<p> <b>Market:</b> ' +mar_name+ '<br> <b>City:</b> ' +mar_city+'<br> <b>Street:</b> '+mar_street+'<br> <b>Season:</b> ' +mar_season+'<br> <b>Hours of Operation:</b> ' +mar_time+'</p>')
                         };
                     });
 
