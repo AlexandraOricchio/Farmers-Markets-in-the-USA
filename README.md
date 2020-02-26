@@ -13,6 +13,8 @@ Our second visual is a bar chart which displays the number of markets each produ
 
 [Data Source](https://catalog.data.gov/dataset/farmers-markets-geographic-data)
 
+---
+
 **Breakdown of work distribution:**
 Together, we collectively cleaned our data set and imported it into PostgreSQL to create a database. We also worked together to build out our initial flask application which creates an API for our farmers market data. From there, we distributed the work as follows:
 
@@ -21,5 +23,14 @@ Together, we collectively cleaned our data set and imported it into PostgreSQL t
 - Created interactive choropleth map with hover feature.
 - Created event listener and handler for the selection of state from dropdown. For the map, the event handler zooms in on the selected state and displays markers for each market in the state. For the side bar, the handler populates the cities and state markets scrollable list. 
 - Created a second event listener and handler using jquery to populate the market(s) information panel based on the city or market name chosen from the scrollable lists. 
+
+**Eli:** 
+- Created D3 bar chart and stacked bar chart.
+- Created event listener and handler to toggle between each bar chart. 
+- Created event listener and handler for the selection of state from dropdown. The event handler changes the bar charts to display state specific data based on the state selected. 
+
+**Raul:** 
+- Created and designed layout of webpage. 
+- Built out the html using bootstrap and CSS styling. This includes the creation of our webpage’s side bar and drop-down selector for state. This also includes the creation of our CSS style sheet, which creates our webpage’s overall theme and color scheme. 
 
 
