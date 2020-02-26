@@ -83,7 +83,7 @@ def state_geojson():
         marketCount=stateDF[stateDF['State']==state]['Markets']
         i['properties']['markets']=int(marketCount.values[0])
     
-    popDF= pd.read_csv("C:\\Users\\aeori\\git\\Project-2\\static\\data\\census_data.csv")
+    popDF= pd.read_csv("static\\data\\census_data.csv")
     popDF = popDF.rename(columns={"B01003_001E":"population", "NAME":"states", "state":"idNo."})
     popDF=popDF.drop(['Unnamed: 0','idNo.'], axis=1)
     for i in geojson["features"]:
@@ -99,7 +99,7 @@ def state_geojson():
         marketsPerCap= (i['properties']['markets']/i['properties']['population'])*100000
         i['properties']['marketsPerCap']=marketsPerCap
 
-    centersDF = pd.read_csv("C:\\Users\\aeori\\git\\Project-2\\static\\data\\state_centers.csv")
+    centersDF = pd.read_csv("static\\data\\state_centers.csv")
     for i in geojson['features']:
         state = i['properties']['name']
         if state in centersDF['State'].tolist():
