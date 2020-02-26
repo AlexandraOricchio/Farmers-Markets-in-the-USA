@@ -2,7 +2,7 @@
 
 **Team:** Raul Haro, Alexandra Oricchio, Eli Payne
 
-##Project Description:##
+## Project Description:
 For our project, we used United States farmers markets data from data.gov to create an interactive web dashboard. The dataset includes metrics for market name and location, payment types accepted, and available products. Our dashboard includes an interactive map and bar chart, presenting our data in different visualizations. 
 
 Our first visual is a choropleth map of the United States which displays the farmers markets per 100,000 per state based on a color scale. The darker the state, the more markets per 100,000. If you hover over a specific state on the map, the information box in the bottom left corner of the map will display the number of total markets in the state and the number of markets per 100,000 in the state. 
@@ -15,7 +15,7 @@ Our second visual is a bar chart which displays the number of markets each produ
 
 ---
 
-##Breakdown of work distribution:##
+## Breakdown of work distribution:
 Together, we collectively cleaned our data set and imported it into PostgreSQL to create a database. We also worked together to build out our initial flask application which creates an API for our farmers market data. From there, we distributed the work as follows:
 
 **Allie:** 
