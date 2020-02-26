@@ -186,7 +186,7 @@ d3.json("geojson").then(function(data) {
                         var dict;
                         if (value==name) {
                             dict = y;
-                            console.log(dict);
+                            // console.log(dict);
                             mar_name = value;
                             mar_city = y.city;
                             mar_street = y.street;
@@ -238,7 +238,7 @@ var margin = {
 };
 
 // chart area minus margins
-var chartHeight = svgHeight - margin.top - margin.bottom;
+var chartHeight = svgHeight - margin.top - margin.bottom - 40; // extra 40 for labels
 var chartWidth = svgWidth - margin.left - margin.right;
 
 // create svg container
