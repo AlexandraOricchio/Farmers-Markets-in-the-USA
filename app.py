@@ -74,6 +74,7 @@ def state_geojson():
         all_markets.append(d)
 
     df=pd.DataFrame(all_markets)
+    df["marketname"]=df["marketname"].str.replace('^','')
     stateDF = pd.DataFrame(df["state"].value_counts())
     stateDF = stateDF.reset_index(drop=False)
     stateDF = stateDF.rename(columns={"index":"State", "state":"Markets"})
@@ -111,6 +112,8 @@ def state_geojson():
         market_list=[]
         state=i["properties"]["name"]
         for market in all_markets:
+            market["marketname"]=market["marketname"].replace('^','')
+            # market["street"]=market["street"].replace('^','')
             if market["state"]==state:
                 market_list.append(market)
             i["properties"]["market_list"]=market_list

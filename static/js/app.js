@@ -226,8 +226,8 @@ var color = d3.scaleOrdinal()
 
 
 // svg container
-var svgHeight = 600;
-var svgWidth = 1000;
+var svgHeight = 300;
+var svgWidth = 800;
 
 // margins
 var margin = {

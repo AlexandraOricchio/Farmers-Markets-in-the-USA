@@ -18,26 +18,33 @@ body {
 }
 
 
-
 .info-direct{
   font-size: smaller;
   font-style: italic;
   padding-top: 2px;
 }
 
+
 /* styling must match class levels for map  */
 #map,
 .row,
+.container,
 .col-9,
 .row,
 .container-fluid,
+.wrapper,
 body,
 html {
   height: 90%;
-  /* z-index: -1; */
-  /* position: relative; */
+  /* z-index: -1;
+  position: relative; */
 }
 
+.graph{
+  margin-left: 300px;
+  margin-top: 10px;
+  
+}
 
 
 /* map info box for hover */
@@ -58,12 +65,12 @@ html {
 
 /* map legen box */
 .legend {
-line-height: 24px;
+line-height: 20px;
 color: #555;
 }
 .legend i {
-width: 24px;
-height: 24px;
+width: 20px;
+height: 20px;
 float: left;
 margin-right: 8px;
 opacity: 0.7;
