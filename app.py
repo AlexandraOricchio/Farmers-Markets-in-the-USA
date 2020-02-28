@@ -113,7 +113,9 @@ def state_geojson():
         state=i["properties"]["name"]
         for market in all_markets:
             market["marketname"]=market["marketname"].replace('^','')
-            # market["street"]=market["street"].replace('^','')
+            if market["street"]:
+                market["street"]=market["street"].replace('|',',')
+                market["street"]=market["street"].replace('^','')
             if market["state"]==state:
                 market_list.append(market)
             i["properties"]["market_list"]=market_list

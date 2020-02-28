@@ -91,11 +91,38 @@
           </select>
         </div>
 
+        <!-- market table -->
+        <div class="state-markets-header">
+          <p class="info-direct"> Click on a City or Market Name below. </p>
+          <h5 class="statemarkets">Cities:</h5>
+        </div>
+        
+        <div class="table1div">
+          <div id="table1">
+            <table id="city-table" class="table table-hover">
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="state-markets-header">
+          <!-- <p class="info-direct"> Click on market name below. </p> -->
+          <h5 class="statemarkets">State Markets:</h5>
+        </div>
+
+        <div class="table2div">
+          <div id="table2">
+            <table id="market-table" class="table table-hover">
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        
+
         <!-- market info -->
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h5 class="panel-title">Market Info:</h5>
-            <p class="info-direct"> Select a State & click on market name below. </p>
+            <h5 class="panel-title">Market(s) Info:</h5>
           </div>
           <div class="panel-body">
             <table id="market-info" class="table-condensed">
@@ -104,15 +131,7 @@
           </div>
         </div>
 
-        <!-- market table -->
-        <div class="state-markets-header">
-          <h5>State Markets:</h5>
-          <div id="table">
-            <table id="market-table" class="table table-hover">
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
+      
 
       <!-- closing side bar id and col-sm-3 -->
       </div>
@@ -122,6 +141,10 @@
         <div class="container">
           <div class="row">
             <div id="map"></div>
+            <div class="tab mt-4">
+              <button class="charttype" id="standard">All Markets</button>
+              <button class="charttype" id="stacked">Payment Types</button>
+            </div>
             <div class="graph"></div>
           </div>
         </div>
@@ -137,45 +160,6 @@
 </div>
 
 
-
-    <!-- images -->
-  <!-- <div class="container">
-    <div class="row">
-      <div class="col-sm-1">
-        
-      </div>
-      <div class="col-md-3">
-        <img src= "/static/images/plants_trees.jpg" height="260" width="380" >
-
-      </div>
-      <div class="col-md-3">
-        <img src= "/static/images/different-types-of-grains.jpg" height="260" width="380" >
-
-
-      </div>
-      <div class="col-md-3">
-        <img src= "/static/images/wine-and-cheese.jpg" height="260" width="380" >
-      </div> 
-
-
-    </div>
-
-  </div> -->
-
-   <!-- Footer -->
-
-    <!--    
-    <footer class="page-footer font-small cyan darken-3">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <img src= "/static/images/Communities.png"> 
-            <p>Join the Market Farmers Community</p>
-            <p>Rice University - Data Analytics</p>
-          </div>  
-        </div>    
-      </div>
-    </footer>  -->
 
   <!-- Our JavaScript -->
   <script type="text/javascript" src="../static/js/config.js"></script>

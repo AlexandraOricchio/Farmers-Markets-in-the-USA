@@ -19,10 +19,31 @@ body {
 
 
 .info-direct{
-  font-size: smaller;
+  /* font-size: smaller; */
   font-style: italic;
   padding-top: 2px;
 }
+
+.statemarkets{
+  text-decoration: underline;
+  color:rgb(48, 48, 49);
+}
+
+.table1div{
+  position: relative;
+  height: 100px;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+.table2div{
+  position: relative;
+  height: 100px;
+  overflow: auto;
+  margin-bottom: 10px;
+}
+
+
 
 
 /* styling must match class levels for map  */
@@ -35,7 +56,7 @@ body {
 .wrapper,
 body,
 html {
-  height: 90%;
+  height: 93%;
   /* z-index: -1;
   position: relative; */
 }
@@ -63,7 +84,7 @@ html {
   text-align: center;
 }
 
-/* map legen box */
+/* map legend box */
 .legend {
 line-height: 20px;
 color: #555;
@@ -76,64 +97,28 @@ margin-right: 8px;
 opacity: 0.7;
 }
 
-/* .footer{
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  background-color:rgb(134, 163, 134);
-  color: white;
-  text-align: center;
-} */
-
-/* 
-.footer{
-  background-color: rgba(139, 71, 25, 0.733);
-  text-emphasis-color: white;  
-}
-
-.container-fluid.p{
-  font-size: 18;
-}
-
-.h1{
-  margin-top: 20px;
-  font-size: 0.1rem;
-  text-align: center;
-  animation: title 1.2s forwards linear;
-}
-.h2{
-  font-size:0.05rem ;
-
-} */
-
-/* .col-md-2{
-  background:rgb(187, 197, 187); 
-  height:400 ; 
-  width: 400;
+/* bar chart */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #86A386;
   margin-top: 10px;
-  margin-left: 5px;
+  margin-right: 40%;
+  margin-left: 250px;  
 }
-.col-md-12{  
-  background-image:url("../images/old_wood.jpg") ;
-  font-size: 18px;
-  margin-top: 5px;  
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
 }
-.col-md-3{
-  margin-left: 10px;
-  margin-right: 5px;
-  width: 350;
-  height: 260;
-} */
-
-/* 
-@keyframes title {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    font-size: 7.5rem;
-    opacity: 1;
-  }
-} */
+.tab button:hover {
+  background-color: rgb(71, 219, 71);
+}
+.tab button.active {
+  background-color: rgb(44, 102, 44);
+  
+}
