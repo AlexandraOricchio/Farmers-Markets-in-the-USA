@@ -48,6 +48,7 @@ body {
 
 /* styling must match class levels for map  */
 #map,
+.map-container,
 .row,
 .container,
 .col-9,
@@ -61,8 +62,12 @@ html {
   position: relative; */
 }
 
+.map-container{
+  margin-left: 250px;
+}
+
 .graph{
-  margin-left: 300px;
+  margin-left: 250px;
   margin-top: 10px;
   
 }
