@@ -24,152 +24,202 @@
 <body>   
   <div class="wrapper">
     <!-- header image -->
-  <div id="header">     
-      <img src= "/static/images/farmer2.jpg" height="250" width="700">
-  </div>
-
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Select state -->
-      <div id="side-bar" class="col-sm-3">
-        <h4>Locate your market!</h4>
-
-        <!-- Select List of States-->
-        <div class="form-group">
-          <select class="form-control" id="sel1">
-            <option selected>Select State</option>
-            <option value= "Alabama">ALABAMA</option>
-            <option value="Alaska">ALASKA</option>
-            <option value="Arizona">ARIZONA</option>
-            <option value="Arkansas">ARKANSAS</option>
-            <option value="California">CALIFORNIA</option>
-            <option value="Colorado">COLORADO</option>
-            <option value="Connecticut">CONNECTICUT</option>
-            <option value="Delaware">DELAWARE</option>
-            <option value="Florida">FLORIDA</option>
-            <option value="Georgia">GEORGIA</option>
-            <option value="Hawaii">HAWAII</option>
-            <option value="Idaho">IDAHO</option>
-            <option value="Illinois">ILLINOIS</option>
-            <option value="Indiana">INDIANA</option>
-            <option value="Iowa">IOWA</option>
-            <option value="Kansas">KANSAS</option>
-            <option value="Kentucky">KENTUCKY</option>
-            <option value="Louisiana">LOUISIANA</option>
-            <option value="Maine">MAINE</option>
-            <option value="Maryland">MARYLAND</option>
-            <option value="Massachusetts">MASSACHUSETTS</option>
-            <option value="Michigan">MICHIGAN</option>
-            <option value="Minnesota">MINNESOTA</option>
-            <option value="Mississippi">MISSISSIPPI</option>
-            <option value="Missouri">MISSOURI</option>
-            <option value="Montana">MONTANA</option>
-            <option value="Nebraska">NEBRASKA</option>
-            <option value="Nevada">NEVADA</option>
-            <option value="New Hampshire">NEW HAMPSHIRE</option>
-            <option value="New Jersey">NEW JERSEY</option>
-            <option value="New Mexico">NEW MEXICO</option>
-            <option value="New York">NEW YORK</option>
-            <option value="North Carolina">NORTH CAROLINA</option>
-            <option value="North Dakota">NORTH DAKOTA</option>
-            <option value="Ohio">OHIO</option>
-            <option value="Oklahoma">OKLAHOMA</option>
-            <option value="Oregon">OREGON</option>
-            <option value="Pennsylvania">PENNSYLVANIA</option>
-            <option value="Rhode Island">RHODE ISLAND</option>
-            <option value="South Carolina">SOUTH CAROLINA</option>
-            <option value="South Dakota">SOUTH DAKOTA</option>
-            <option value="Tennessee">TENNESSEE</option>
-            <option value="Texas">TEXAS</option>
-            <option value="Utah">UTAH</option>
-            <option value="Vermont">VERMONT</option>
-            <option value="Virginia">VIRGINIA</option>
-            <option value="Washington">WASHINGTON</option>
-            <option value="West Virginia">WEST VIRGINIA</option>
-            <option value="Wisconsin">WISCONSIN</option>
-            <option value="Wyoming">WYOMING</option>
-          </select>
-        </div>
-
-        <!-- market table -->
-        <div class="state-markets-header">
-          <h5 class="statemarkets">Cities:</h5>
-        </div>
-        
-        <div class="table1div">
-          <div id="table1">
-            <table id="city-table" class="table table-hover">
-              <tbody>
-                <tr>
-                  <td class="default-text">Select a State from above.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="state-markets-header">
-          <h5 class="statemarkets">State Markets:</h5>
-        </div>
-
-        <div class="table2div">
-          <div id="table2">
-            <table id="market-table" class="table table-hover">
-              <tbody>
-                <tr>
-                  <td class="default-text">Select a State from above.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-
-        <!-- market info -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h5 class="panel-title">Market(s) Info:</h5>
-          </div>
-          <div class="panel-body">
-            <table id="market-info" class="table-condensed">
-              <tbody>
-                <tr>
-                  <td class="default-text"> Click on a City or Market Name from above.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      
-
-      <!-- closing side bar id and col-sm-3 -->
-      </div>
-
-      <!-- map and graph  -->
-      <div class="col-9">
-        <div class="container">
-          <div class="row">
-            <div class="map-container">
-              <div id="map"></div>
-            </div>
-            <div class="tab mt-4">
-              <button class="charttype" id="standard">All Markets</button>
-              <button class="charttype" id="stacked">Payment Types</button>
-            </div>
-            <div class="graph"></div>
-          </div>
-        </div>
-      </div>
-
-    <!-- closing row -->
+    <div id="header">     
+        <img src= "/static/images/farmer2.jpg" height="250" width="700">
     </div>
-  <!-- closing fluid container -->
-  </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Select state -->
+        <div id="side-bar" class="col-sm-3">
+          <h4>Locate your market!</h4>
+
+          <!-- Select List of States-->
+          <div class="form-group">
+            <select class="form-control" id="sel1">
+              <option selected>Select State</option>
+              <option value= "Alabama">ALABAMA</option>
+              <option value="Alaska">ALASKA</option>
+              <option value="Arizona">ARIZONA</option>
+              <option value="Arkansas">ARKANSAS</option>
+              <option value="California">CALIFORNIA</option>
+              <option value="Colorado">COLORADO</option>
+              <option value="Connecticut">CONNECTICUT</option>
+              <option value="Delaware">DELAWARE</option>
+              <option value="Florida">FLORIDA</option>
+              <option value="Georgia">GEORGIA</option>
+              <option value="Hawaii">HAWAII</option>
+              <option value="Idaho">IDAHO</option>
+              <option value="Illinois">ILLINOIS</option>
+              <option value="Indiana">INDIANA</option>
+              <option value="Iowa">IOWA</option>
+              <option value="Kansas">KANSAS</option>
+              <option value="Kentucky">KENTUCKY</option>
+              <option value="Louisiana">LOUISIANA</option>
+              <option value="Maine">MAINE</option>
+              <option value="Maryland">MARYLAND</option>
+              <option value="Massachusetts">MASSACHUSETTS</option>
+              <option value="Michigan">MICHIGAN</option>
+              <option value="Minnesota">MINNESOTA</option>
+              <option value="Mississippi">MISSISSIPPI</option>
+              <option value="Missouri">MISSOURI</option>
+              <option value="Montana">MONTANA</option>
+              <option value="Nebraska">NEBRASKA</option>
+              <option value="Nevada">NEVADA</option>
+              <option value="New Hampshire">NEW HAMPSHIRE</option>
+              <option value="New Jersey">NEW JERSEY</option>
+              <option value="New Mexico">NEW MEXICO</option>
+              <option value="New York">NEW YORK</option>
+              <option value="North Carolina">NORTH CAROLINA</option>
+              <option value="North Dakota">NORTH DAKOTA</option>
+              <option value="Ohio">OHIO</option>
+              <option value="Oklahoma">OKLAHOMA</option>
+              <option value="Oregon">OREGON</option>
+              <option value="Pennsylvania">PENNSYLVANIA</option>
+              <option value="Rhode Island">RHODE ISLAND</option>
+              <option value="South Carolina">SOUTH CAROLINA</option>
+              <option value="South Dakota">SOUTH DAKOTA</option>
+              <option value="Tennessee">TENNESSEE</option>
+              <option value="Texas">TEXAS</option>
+              <option value="Utah">UTAH</option>
+              <option value="Vermont">VERMONT</option>
+              <option value="Virginia">VIRGINIA</option>
+              <option value="Washington">WASHINGTON</option>
+              <option value="West Virginia">WEST VIRGINIA</option>
+              <option value="Wisconsin">WISCONSIN</option>
+              <option value="Wyoming">WYOMING</option>
+            </select>
+          </div>
+
+          <!-- market table -->
+          <div class="state-markets-header">
+            <h5 class="statemarkets">Cities:</h5>
+          </div>
+          
+          <div class="table1div">
+            <div id="table1">
+              <table id="city-table" class="table table-hover">
+                <tbody>
+                  <tr>
+                    <td class="default-text">Select a State from above.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="state-markets-header">
+            <h5 class="statemarkets">State Markets:</h5>
+          </div>
+
+          <div class="table2div">
+            <div id="table2">
+              <table id="market-table" class="table table-hover">
+                <tbody>
+                  <tr>
+                    <td class="default-text">Select a State from above.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
+
+          <!-- market info -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">Market(s) Info:</h5>
+            </div>
+            <div class="panel-body">
+              <table id="market-info" class="table-condensed">
+                <tbody>
+                  <tr>
+                    <td class="default-text"> Click on a City or Market Name from above.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        
+
+        <!-- closing side bar id and col-sm-3 -->
+        </div>
+
+        <!-- map and graph  -->
+        <div class="col-9">
+          <div class="container">
+            <div class="row">
+              <div class="map-container">
+                <div id="map"></div>
+              </div>
+              <div class="tab">
+                <div class="col-sm-5 mt-3 mx-auto">
+                  <h5>View markets where each product is sold or payment types accepted</h5>
+                  <button class="charttype border" id="standard">All Markets</button>
+                  <button class="charttype border" id="stacked">Payment Types</button>
+                </div>
+
+                <div class = "col-sm-2 text-center align-middle">
+                  <h6>OR...</h6>
+                </div>
+
+                <div class= "col-sm-5 mt-3 text-right mx-auto">
+                  <h5>Choose a product to view its most popular states</h5>
+                  <div class="form-group">
+                    <select class="form-control" id="sel2">
+                      <option selected>Select Product</option>
+                      <option value="bakedgoods">Bakedgoods</option>
+                      <option value="cheese">Cheese</option>
+                      <option value="crafts">Crafts</option>
+                      <option value="flowers">Flowers</option>
+                      <option value="eggs">Eggs</option>
+                      <option value="seafood">Seafood</option>
+                      <option value="herbs">Herbs</option>
+                      <option value="vegetables">Vegetables</option>
+                      <option value="honey">Honey</option>
+                      <option value="jams">Jams</option>
+                      <option value="maple">Maple</option>
+                      <option value="meat">Meat</option>
+                      <option value="nursery">Nursery</option>
+                      <option value="nuts">Nuts</option>
+                      <option value="plants">Plants</option>
+                      <option value="poultry">Poultry</option>
+                      <option value="prepared">Prepared</option>
+                      <option value="soap">Soap</option>
+                      <option value="trees">Trees</option>
+                      <option value="wine">Wine</option>
+                      <option value="coffee">Coffee</option>
+                      <option value="beans">Beans</option>
+                      <option value="fruits">Fruits</option>
+                      <option value="grains">Grains</option>
+                      <option value="juices">Juices</option>
+                      <option value="mushrooms">Mushrooms</option>
+                      <option value="petfood">PetFood</option>
+                      <option value="tofu">Tofu</option>
+                      <option value="wildharvested">WildHarvested</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-10"> -->
+              <div class="graph"></div>
+                <!-- </div>
+              </div> -->
+                
+            </div>
+          </div>
+        </div>
+
+      <!-- closing row -->
+      </div>
+    <!-- closing fluid container -->
+    </div>
 
 
   <!-- close wrapper  -->
-</div>
+  </div>
 
 
 

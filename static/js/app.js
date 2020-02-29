@@ -135,7 +135,7 @@ d3.json("geojson").then(function(data) {
         });
 
     // event listener for drop down selection
-    const select = document.querySelector('.form-control');
+    const select = document.querySelector('#sel1');
     select.addEventListener('change', stateZoom);
 
     // state dropdown handler function
@@ -238,6 +238,12 @@ var paymentOptions = ["credit","wic","wiccash","sfmnp","snap"];
 var products = ["bakedgoods","cheese","crafts","flowers","eggs","seafood","herbs","vegetables","honey",
 "jams","maple","meat","nursery","nuts","plants","poultry","prepared","soap","trees","wine","coffee","beans",
 "fruits","grains","juices","mushrooms","petfood","tofu","wildharvested"];
+var states = ["Vermont","Ohio","South Carolina","Missouri","New York","Tennessee","Delaware","Oregon","Minnesota",
+"Virginia","Pennsylvania","Nebraska","Illinois","Florida","Washington","Kansas","New Jersey","Utah","Maryland",
+"Indiana","Nevada","Colorado","Alabama","Iowa","Wisconsin","South Dakota","Massachusetts","Louisiana","New Mexico",
+"Maine","Georgia","Oklahoma","Michigan","Kentucky","Hawaii","California","North Carolina","Arizona","Texas",
+"West Virginia","Idaho","Montana","North Dakota","Alaska","Rhode Island","Arkansas","Connecticut","Mississippi",
+"New Hampshire","Wyoming",];
 
 // colors for stacked bar chart
 var color = d3.scaleOrdinal()
@@ -246,11 +252,11 @@ var color = d3.scaleOrdinal()
 
 
 // svg container
-var svgHeight = 400;
+var svgHeight = 450;
 var svgWidth = 800;
 
 // margins
-var margin = {
+var margin1 = {
   top: 80,
   right: 70,
   bottom: 50,
@@ -258,8 +264,8 @@ var margin = {
 };
 
 // chart area minus margins
-var chartHeight = svgHeight - margin.top - margin.bottom - 40; // extra 40 for labels
-var chartWidth = svgWidth - margin.left - margin.right;
+var chartHeight1 = svgHeight - margin1.top - margin1.bottom - 40; // extra 40 for labels
+var chartWidth1 = svgWidth - margin1.left - margin1.right;
 
 // create svg container
 var svg = d3.select(".graph").append("svg")
@@ -273,8 +279,8 @@ svg.append("rect")
 
 
 // shift everything over by the margins
-var chartGroup = svg.append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+var chartGroup1 = svg.append("g")
+    .attr("transform", `translate(${margin1.left}, ${margin1.top})`);
 
 // returns an array of objects. Each object contains the product, the number of markets that product is sold in
 // (filtered by state if included), the number of markets accepting each payment type for that product,
@@ -298,35 +304,48 @@ function countProducts(data, state) {
     return productCounts;
 }
 
+function countStates(data, product){
+    let productCounts = data.filter(d => d[product] === "Y")
+    let stateCounts = []
+    states.forEach(s => {
+        let state = {}
+        state["state"] = s;
+        state["markets"] = productCounts.filter(d => d["state"] === s).length;
+        state["marketsProportion"] = state["markets"]/data.filter(d => d["state"] === s).length;
+        stateCounts.push(state);
+    });
+    stateCounts.sort((a,b) =>  b["marketsProportion"] - a["marketsProportion"]);
+    return stateCounts;
+}
+
 function updateStandard(data, selection) {
     if (!!selection) {
         var state = d3.select(selection).property("value");
-        // console.log(state);
         var productsCounts = countProducts(data, state);
     }
     else {
         var productsCounts = countProducts(data);
     }
 
-    chartWidth = svgWidth - margin.left - margin.right
+    chartWidth1 = svgWidth - margin1.left - margin1.right
 
-    chartGroup.selectAll("*").remove(); //clear before redrawing
+    chartGroup1.selectAll("*").remove(); //clear before redrawing
     svg.selectAll("text").remove();
     svg.selectAll(".legend").remove();
 
-    var xBandScale = d3.scaleBand()
+    let xBandScale = d3.scaleBand()
         .domain(productsCounts.map(d => d["product"]))
-        .range([0, chartWidth])
+        .range([0, chartWidth1])
         .padding(0.1);
-    var yLinearScale = d3.scaleLinear()
+    let yLinearScale = d3.scaleLinear()
         .domain([0, d3.max(productsCounts.map(d => d["markets"])) * 1.1])
-        .range([chartHeight, 0]);
-    var bottomAxis = d3.axisBottom(xBandScale);
-    var leftAxis = d3.axisLeft(yLinearScale);
+        .range([chartHeight1, 0]);
+    let bottomAxis = d3.axisBottom(xBandScale);
+    let leftAxis = d3.axisLeft(yLinearScale);
 
-    var xAxis = chartGroup.append("g")
+    let xAxis = chartGroup1.append("g")
         .classed("x-axis", true)
-        .attr("transform", `translate(0, ${chartHeight})`)
+        .attr("transform", `translate(0, ${chartHeight1})`)
         .call(bottomAxis)
         .selectAll("text")  
         .style("text-anchor", "end")
@@ -334,34 +353,34 @@ function updateStandard(data, selection) {
         .attr("dy", ".15em")
         .attr("transform", "rotate(-65)");
         
-    let yAxis = chartGroup.append("g")
+    let yAxis = chartGroup1.append("g")
         .classed("y-axis", true)
         .call(leftAxis);
 
-    let rectGroup = chartGroup.selectAll("unused")
+    let rectGroup = chartGroup1.selectAll("unused")
         .data(productsCounts)
         .enter()
         .append("g");
 
     rectGroup.append("rect")
         .attr("width", xBandScale.bandwidth())
-        .attr("height", d => chartHeight - yLinearScale(d["markets"]))
+        .attr("height", d => chartHeight1 - yLinearScale(d["markets"]))
         .attr("x", d => xBandScale(d["product"]))
         .attr("y", d => yLinearScale(d["markets"]))
         .attr("class", "bar")
         .attr("fill", "#006d2c");
     
-    svg.append("text")
-        .attr("x", svgWidth / 2)             
-        .attr("y", 20)
+    chartGroup1.append("text")
+        .attr("x", chartWidth1 / 2)             
+        .attr("y", -30)
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
         .style("fill", "white")  
         .text(`Number of Markets Where Each Product Is Sold${!!selection ? " In " + state : ""}`);
 
-    svg.append("text")
-        .attr("x", -svgHeight / 2)             
-        .attr("y", 20)
+    chartGroup1.append("text")
+        .attr("x", -chartHeight1 / 2)             
+        .attr("y", -40)
         .attr("text-anchor", "middle")  
         .style("font-size", "12px") 
         .style("fill", "white") 
@@ -378,7 +397,7 @@ function updateStacked(data, selection) {
         var productsCounts = countProducts(data);
     }
 
-    chartWidth = svgWidth - margin.left - margin.right - 60
+    chartWidth1 = svgWidth - margin1.left - margin1.right - 60
 
     // organize data for stacked bar charts
     var stackedData = d3.stack()
@@ -386,23 +405,23 @@ function updateStacked(data, selection) {
     stackedData.forEach(d => d.sort((a,b) => b.data.markets - a.data.markets));
 
     // clear
-    chartGroup.selectAll("*").remove();
+    chartGroup1.selectAll("*").remove();
     svg.selectAll("text").remove();
     svg.selectAll(".legend").remove();
 
-    var xBandScale = d3.scaleBand()
+    let xBandScale = d3.scaleBand()
         .domain(stackedData[0].map(d => d.data.product))
-        .range([0, chartWidth])
+        .range([0, chartWidth1])
         .padding(0.1);
-    var yLinearScale = d3.scaleLinear()
+    let yLinearScale = d3.scaleLinear()
         .domain([0, 1.1 * d3.max(productsCounts.map(p => p.allPayments/p.markets))])
-        .range([chartHeight, 0]);
-    var bottomAxis = d3.axisBottom(xBandScale);
-    var leftAxis = d3.axisLeft(yLinearScale);
+        .range([chartHeight1, 0]);
+    let bottomAxis = d3.axisBottom(xBandScale);
+    let leftAxis = d3.axisLeft(yLinearScale);
 
-    var xAxis = chartGroup.append("g")
+    let xAxis = chartGroup1.append("g")
         .classed("x-axis", true)
-        .attr("transform", `translate(0, ${chartHeight})`)
+        .attr("transform", `translate(0, ${chartHeight1})`)
         .call(bottomAxis)
         .selectAll("text")  
         .style("text-anchor", "end")
@@ -410,12 +429,12 @@ function updateStacked(data, selection) {
         .attr("dy", ".15em")
         .attr("transform", "rotate(-65)");
         
-    let yAxis = chartGroup.append("g")
+    let yAxis = chartGroup1.append("g")
         .classed("y-axis", true)
         .call(leftAxis);
 
     // for a stacked bar chart, need to first add groups first and then rects for each segment
-    var superGroup = chartGroup.append("g")
+    let superGroup = chartGroup1.append("g")
         .selectAll("g")
         .data(stackedData)
         .enter()
@@ -423,7 +442,7 @@ function updateStacked(data, selection) {
         .attr("fill", d => color(d.key))
         .attr("class", d => "myRect " + d.key ); // Add a class to each subgroup: their name
             
-    var rectGroup = superGroup.selectAll("rect")
+    let rectGroup = superGroup.selectAll("rect")
         // enter a second time = loop subgroup per subgroup to add all rectangles
         .data(d => d)
         .enter()
@@ -434,38 +453,37 @@ function updateStacked(data, selection) {
         .attr("height", d => yLinearScale(d[0]/d.data.markets) - yLinearScale(d[1]/d.data.markets))
         .attr("width", xBandScale.bandwidth());
     
-    svg.append("text")
-        .attr("x", svgWidth / 2)             
-        .attr("y", 20)
+    chartGroup1.append("text")
+        .attr("x", chartWidth1 / 2)             
+        .attr("y", -30)
         .attr("text-anchor", "middle")  
         .style("font-size", "16px") 
-        .style("text-decoration", "underline")
         .style("fill", "white")  
-        .text(`Percentage of Markets Accepting Payment Types By Product${!!selection ? " In " + state : ""}`);
+        .text(`Proportion of Markets Accepting Payment Types By Product${!!selection ? " In " + state : ""}`);
     
-    svg.append("text")
-        .attr("x", -svgHeight / 2)             
-        .attr("y", 20)
+    chartGroup1.append("text")
+        .attr("x", -chartHeight1 / 2)             
+        .attr("y", -40)
         .attr("text-anchor", "middle")  
         .style("font-size", "12px") 
         .style("fill", "white") 
         .attr("transform", "rotate(-90)") 
-        .text(`Percentage of Markets Accepting Payment Type`);
+        .text(`Proportion of Markets Accepting Payment Type`);
 
-    var legend = svg.selectAll(".legend")
+    var legend = chartGroup1.selectAll(".legend")
         .data(d3.schemePaired.slice(0,5))
         .enter().append("g")
         .attr("class", "legend")
         .attr("transform", function(d, i) { return `translate(30, ${10 + i * 19})`; });
     
     legend.append("rect")
-        .attr("x", svgWidth * 0.84)
+        .attr("x", chartWidth1 * 1.01)
         .attr("width", 18)
         .attr("height", 18)
         .style("fill", function(d, i) {return d3.schemePaired.slice(0,5).slice().reverse()[i];});
     
     legend.append("text")
-        .attr("x", svgWidth * 0.84 + 20)
+        .attr("x", chartWidth1 * 1.01 + 20)
         .attr("y", 9)
         .attr("dy", ".35em")
         .style("text-anchor", "start")
@@ -475,33 +493,104 @@ function updateStacked(data, selection) {
                 case 1: return "SFMNP";
                 case 2: return "WICCash";
                 case 3: return "WIC";
-                case 4: return "Credit";
+                case 4: return "Credit";    
             }
         });
 }
 
 
+
+function updateStateCounts(data, selection){
+    let product = d3.select(selection).property("value");
+    let stateCounts = countStates(data, product);
+    chartWidth1 = svgWidth - margin1.left - margin1.right
+
+    chartGroup1.selectAll("*").remove(); //clear before redrawing
+    svg.selectAll("text").remove();
+    svg.selectAll(".legend").remove();
+
+    let xBandScale = d3.scaleBand()
+        .domain(stateCounts.map(d => d["state"]))
+        .range([0, chartWidth1])
+        .padding(0.1);
+    let yLinearScale = d3.scaleLinear()
+        .domain([0, d3.max(stateCounts.map(d => d["marketsProportion"])) * 1.1])
+        .range([chartHeight1, 0]);
+    let bottomAxis = d3.axisBottom(xBandScale);
+    let leftAxis = d3.axisLeft(yLinearScale);
+
+    let xAxis = chartGroup1.append("g")
+        .classed("x-axis", true)
+        .attr("transform", `translate(0, ${chartHeight1})`)
+        .call(bottomAxis)
+        .selectAll("text")  
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-65)");
+        
+    let yAxis = chartGroup1.append("g")
+        .classed("y-axis", true)
+        .call(leftAxis);
+
+    let rectGroup = chartGroup1.selectAll("unused")
+        .data(stateCounts)
+        .enter()
+        .append("g");
+
+    rectGroup.append("rect")
+        .attr("width", xBandScale.bandwidth())
+        .attr("height", d => chartHeight1 - yLinearScale(d["marketsProportion"]))
+        .attr("x", d => xBandScale(d["state"]))
+        .attr("y", d => yLinearScale(d["marketsProportion"]))
+        .attr("class", "bar")
+        .attr("fill", "#006d2c");
+    
+    chartGroup1.append("text")
+        .attr("x", chartWidth1 / 2)             
+        .attr("y", -30)
+        .attr("text-anchor", "middle")  
+        .style("font-size", "16px") 
+        .style("fill", "white")  
+        .text(`Proportion of Markets In Each State Selling ${product}`);
+
+    chartGroup1.append("text")
+        .attr("x", -chartHeight1 / 2)             
+        .attr("y", -40)
+        .attr("text-anchor", "middle")  
+        .style("font-size", "12px") 
+        .style("fill", "white") 
+        .attr("transform", "rotate(-90)") 
+        .text(`Proportion Of Markets Sold In`);
+
+}
+
 d3.json("json").then(function(data) {
     // Initial standard bar chart: number of markets each product is sold in
     let chartType = "standard";
-    let stateSelection = undefined; //initially undefined, will be updated on state selection
+    let stateSelection = undefined; //initially undefined, will be updated on selection
+    let productSelection = undefined;
 
     updateStandard(data, stateSelection);
 
-    // draw standard bar chart
+    // draw standard bar chart for counts of markets selling all products
     d3.select("#standard").on("click", function() {
+        $("#sel2").each(function() { this.selectedIndex = 0 });
         chartType = "standard";
         updateStandard(data, stateSelection);
     });
 
-    // draw stacked bar chart
+    // draw stacked bar chart for proportions of markets accepting each payment type for all products
     d3.select("#stacked").on("click", function() {
+        $("#sel2").each(function() { this.selectedIndex = 0 });
         chartType = "stacked";
         updateStacked(data, stateSelection);
+        d3.select("#standard").classed("active", false);
     });
 
     // redraw for a specific state
-    d3.select(".form-control").on("change", function() {
+    d3.select("#sel1").on("change", function() {
+        $("#sel2").each(function() { this.selectedIndex = 0 });
         if (d3.select(this).property("value") === "Select State") {
             stateSelection = undefined;
         }
@@ -516,4 +605,17 @@ d3.json("json").then(function(data) {
             updateStacked(data, stateSelection);
         }
     });
+
+    // redraw for a specific product
+    d3.select("#sel2").on("change", function(){
+        if (d3.select(this).property("value") === "Select Product") {
+            productSelection = undefined;
+            return;
+        }
+        else {
+            productSelection = this;
+        }
+        updateStateCounts(data, productSelection);
+
+    })
 });
