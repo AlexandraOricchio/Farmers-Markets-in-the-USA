@@ -91,85 +91,136 @@
           </select>
         </div>
 
-        <!-- market table -->
-        <div class="state-markets-header">
-          <h5 class="statemarkets">Cities:</h5>
-        </div>
-        
-        <div class="table1div">
-          <div id="table1">
-            <table id="city-table" class="table table-hover">
-              <tbody>
-                <tr>
-                  <td class="default-text">Select a State from above.</td>
-                </tr>
-              </tbody>
-            </table>
+
+          <!-- market table -->
+          <div class="state-markets-header">
+            <h5 class="statemarkets">Cities:</h5>
           </div>
-        </div>
-
-        <div class="state-markets-header">
-          <h5 class="statemarkets">State Markets:</h5>
-        </div>
-
-        <div class="table2div">
-          <div id="table2">
-            <table id="market-table" class="table table-hover">
-              <tbody>
-                <tr>
-                  <td class="default-text">Select a State from above.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        
-
-        <!-- market info -->
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h5 class="panel-title">Market(s) Info:</h5>
-          </div>
-          <div class="panel-body">
-            <table id="market-info" class="table-condensed">
-              <tbody>
-                <tr>
-                  <td class="default-text"> Click on a City or Market Name from above.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-      
-
-      <!-- closing side bar id and col-sm-3 -->
-      </div>
-
-      <!-- map and graph  -->
-      <div class="col-9">
-        <div class="container">
-          <div class="row">
-            <div class="map-container">
-              <div id="map"></div>
+          
+          <div class="table1div">
+            <div id="table1">
+              <table id="city-table" class="table table-hover">
+                <tbody>
+                  <tr>
+                    <td class="default-text">Select a State from above.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="tab mt-4">
-              <button class="charttype" id="standard">All Markets</button>
-              <button class="charttype" id="stacked">Payment Types</button>
+          </div>
+
+          <div class="state-markets-header">
+            <h5 class="statemarkets">State Markets:</h5>
+          </div>
+
+          <div class="table2div">
+            <div id="table2">
+              <table id="market-table" class="table table-hover">
+                <tbody>
+                  <tr>
+                    <td class="default-text">Select a State from above.</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div class="graph"></div>
+          </div>
+          
+
+          <!-- market info -->
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h5 class="panel-title">Market(s) Info:</h5>
+            </div>
+            <div class="panel-body">
+              <table id="market-info" class="table-condensed">
+                <tbody>
+                  <tr>
+                    <td class="default-text"> Click on a City or Market Name from above.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        
+
+        <!-- closing side bar id and col-sm-3 -->
+        </div>
+
+        <!-- map and graph  -->
+        <div class="col-9">
+          <div class="container">
+            <div class="row">
+              <div class="map-container">
+                <div id="map"></div>
+              </div>
+              <div class="tab">
+                <div class="col-sm-5 mt-3 mx-auto">
+                  <h5>View markets where each product is sold or payment types accepted</h5>
+                  <button class="charttype border" id="standard">All Markets</button>
+                  <button class="charttype border" id="stacked">Payment Types</button>
+                </div>
+
+                <div class = "col-sm-2 text-center align-middle">
+                  <h6>OR...</h6>
+                </div>
+
+                <div class= "col-sm-5 mt-3 text-right mx-auto">
+                  <h5>Choose a product to view its most popular states</h5>
+                  <div class="form-group">
+                    <select class="form-control" id="sel2">
+                      <option selected>Select Product</option>
+                      <option value="bakedgoods">Bakedgoods</option>
+                      <option value="cheese">Cheese</option>
+                      <option value="crafts">Crafts</option>
+                      <option value="flowers">Flowers</option>
+                      <option value="eggs">Eggs</option>
+                      <option value="seafood">Seafood</option>
+                      <option value="herbs">Herbs</option>
+                      <option value="vegetables">Vegetables</option>
+                      <option value="honey">Honey</option>
+                      <option value="jams">Jams</option>
+                      <option value="maple">Maple</option>
+                      <option value="meat">Meat</option>
+                      <option value="nursery">Nursery</option>
+                      <option value="nuts">Nuts</option>
+                      <option value="plants">Plants</option>
+                      <option value="poultry">Poultry</option>
+                      <option value="prepared">Prepared</option>
+                      <option value="soap">Soap</option>
+                      <option value="trees">Trees</option>
+                      <option value="wine">Wine</option>
+                      <option value="coffee">Coffee</option>
+                      <option value="beans">Beans</option>
+                      <option value="fruits">Fruits</option>
+                      <option value="grains">Grains</option>
+                      <option value="juices">Juices</option>
+                      <option value="mushrooms">Mushrooms</option>
+                      <option value="petfood">PetFood</option>
+                      <option value="tofu">Tofu</option>
+                      <option value="wildharvested">WildHarvested</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-10"> -->
+              <div class="graph"></div>
+                <!-- </div>
+              </div> -->
+                
+            </div>
           </div>
         </div>
-      </div>
 
-    <!-- closing row -->
+      <!-- closing row -->
+      </div>
+    <!-- closing fluid container -->
     </div>
-  <!-- closing fluid container -->
-  </div>
 
 
   <!-- close wrapper  -->
-</div>
+  </div>
 
 
 
