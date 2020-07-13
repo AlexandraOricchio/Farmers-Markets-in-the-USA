@@ -1,4 +1,5 @@
 # Farmers Markets in the United States 
+### [Click Here](https://p2-farmers-markets.herokuapp.com/) for deployment of Heroku Application. 
 
 **Team:** Raul Haro, Alexandra Oricchio, Eli Payne
 
