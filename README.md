@@ -17,7 +17,7 @@ To the left of our map is a drop-down selector for state. When a state is select
 ![sidebar](Images/market_info.JPG)
 
 
-Our second visual is a bar chart which displays the number of markets each product is available at. This bar chart responds to the state dropdown selection as well. When a state is selected, the bar chart populates with data specific to the chosen state. It also futures a Payment tab that displays the accepted payment types in the selected state based on product. This visual also includes its own drop down to view where specific products are most popularly sold. Based on the selected product from the drop down, the bar chart presents the proportion of markets in each state that sell said product.  
+Our second visual is a bar chart which displays the number of markets each product is available at. This bar chart responds to the state dropdown selection as well. When a state is selected, the bar chart populates with data specific to the chosen state. It also futures a Payment tab that displays the accepted payment types in the selected state based on product. This visual also includes its own dropdown to view where specific products are most popularly sold. Based on the selected product from the dropdown, the bar chart presents the proportion of markets in each state that sell said product.  
 
 ![product_count](Images/product_count_tx.JPG)
 
