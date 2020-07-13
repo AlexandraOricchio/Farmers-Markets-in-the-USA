@@ -19,6 +19,13 @@ To the left of our map is a drop-down selector for state. When a state is select
 
 Our second visual is a bar chart which displays the number of markets each product is available at. This bar chart responds to the state dropdown selection as well. When a state is selected, the bar chart populates with data specific to the chosen state. 
 
+![product_count](Images/product_count_tx.JPG)
+
+![specific_product](Images/specific_product.JPG)
+
+![payment_type](Images/payment_type.png)
+
+
 [Data Source](https://catalog.data.gov/dataset/farmers-markets-geographic-data)
 
 ---
